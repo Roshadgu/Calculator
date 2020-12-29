@@ -44,6 +44,14 @@ class MainActivity : AppCompatActivity()
     }
   }
 
+  private fun removeZeroAferDot(result: String): String
+  {
+    var value = result
+    if(result.contains(".0"))
+      value = result.substring(0, result.length - 2) //get's rid of the last to characters of the result string 99.0 -> 99 and 0123 -> 01
+    return value
+  }
+
   fun onEqual(view: View)
   {
     if(lastNumeric)
@@ -90,7 +98,7 @@ class MainActivity : AppCompatActivity()
             one = prefix + one
           }
 
-          tvInput.text = (one.toDouble() - two.toDouble()).toString() //turns the values into doubles and turns the result into a string that the text field can accept
+          tvInput.text = removeZeroAferDot((one.toDouble() - two.toDouble()).toString()) //turns the values into doubles and turns the result into a string that the text field can accept
         }
 
         if(tvValue.contains("+")) //Addition
@@ -105,7 +113,7 @@ class MainActivity : AppCompatActivity()
             one = prefix + one
           }
 
-          tvInput.text = (one.toDouble() + two.toDouble()).toString() //turns the values into doubles and turns the result into a string that the text field can accept
+          tvInput.text = removeZeroAferDot((one.toDouble() + two.toDouble()).toString()) //turns the values into doubles and turns the result into a string that the text field can accept
         }
 
         if(tvValue.contains("*")) // Multiplication
@@ -120,7 +128,7 @@ class MainActivity : AppCompatActivity()
             one = prefix + one
           }
 
-          tvInput.text = (one.toDouble() * two.toDouble()).toString() //turns the values into doubles and turns the result into a string that the text field can accept
+          tvInput.text = removeZeroAferDot((one.toDouble() * two.toDouble()).toString()) //turns the values into doubles and turns the result into a string that the text field can accept
         }
 
         if(tvValue.contains("/")) //Division
@@ -135,7 +143,7 @@ class MainActivity : AppCompatActivity()
             one = prefix + one
           }
 
-          tvInput.text = (one.toDouble() / two.toDouble()).toString() //turns the values into doubles and turns the result into a string that the text field can accept
+          tvInput.text = removeZeroAferDot((one.toDouble() / two.toDouble()).toString()) //turns the values into doubles and turns the result into a string that the text field can accept
         }
       }
 
