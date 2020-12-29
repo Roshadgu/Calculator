@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import java.lang.ArithmeticException
 
 class MainActivity : AppCompatActivity()
 {
@@ -40,6 +41,131 @@ class MainActivity : AppCompatActivity()
       tvInput.append(".")
       lastNumeric = false
       lastDot = true
+    }
+  }
+
+  fun onEqual(view: View)
+  {
+    if(lastNumeric)
+    {
+      val tvInput = findViewById<TextView>(R.id.tvInput)
+      var tvValue = tvInput.text.toString()
+      var prefix = ""
+
+      try
+      {
+        if(tvValue.startsWith("-"))
+        {
+          prefix = "-"
+          tvValue = tvValue.substring(1) //ignores the minus if it exist
+        }
+
+        if(tvValue.startsWith("+"))
+        {
+          prefix = "+"
+          tvValue = tvValue.substring(1) //ignores the plus if it exist
+        }
+
+        if(tvValue.startsWith("*"))
+        {
+          prefix = "*"
+          tvValue = tvValue.substring(1) //ignores the multiplication symbol if it exist
+        }
+
+        if(tvValue.startsWith("/"))
+        {
+          prefix = "/"
+          tvValue = tvValue.substring(1) //ignores the division slash symbol if it exist
+        }
+        //Splitting the operations by the symbols
+        if(tvValue.contains("-")) //Subtraction
+        {
+          val splitValue = tvValue.split("-") // splits the operation into 2 parts, before and after the minus symbol
+
+          var one = splitValue[0] //before the -
+          var two = splitValue[1] //after the -
+
+          if(!prefix.isEmpty())
+          {
+            one = prefix + one
+          }
+
+          tvInput.text = (one.toDouble() - two.toDouble()).toString() //turns the values into doubles and turns the result into a string that the text field can accept
+        }
+
+        if(tvValue.contains("+")) //Addition
+        {
+          val splitValue = tvValue.split("+") // splits the operation into 2 parts, before and after the addition symbol
+
+          var one = splitValue[0] //before the +
+          var two = splitValue[1] //after the +
+
+          if(!prefix.isEmpty())
+          {
+            one = prefix + one
+          }
+
+          tvInput.text = (one.toDouble() + two.toDouble()).toString() //turns the values into doubles and turns the result into a string that the text field can accept
+        }
+
+        if(tvValue.contains("*")) // Multiplication
+        {
+          val splitValue = tvValue.split("*") // splits the operation into 2 parts, before and after the multiplication symbol
+
+          var one = splitValue[0] //before the *
+          var two = splitValue[1] //after the *
+
+          if(!prefix.isEmpty())
+          {
+            one = prefix + one
+          }
+
+          tvInput.text = (one.toDouble() * two.toDouble()).toString() //turns the values into doubles and turns the result into a string that the text field can accept
+        }
+
+        if(tvValue.contains("/")) //Division
+        {
+          val splitValue = tvValue.split("/") // splits the operation into 2 parts, before and after the division symbol
+
+          var one = splitValue[0] //before the /
+          var two = splitValue[1] //after the /
+
+          if(!prefix.isEmpty())
+          {
+            one = prefix + one
+          }
+
+          tvInput.text = (one.toDouble() / two.toDouble()).toString() //turns the values into doubles and turns the result into a string that the text field can accept
+        }
+      }
+
+      catch (e: ArithmeticException) //In case the operation makes no sense
+      {
+        e.printStackTrace()
+      }
+    }
+  }
+
+  fun onOperator(view: View)
+  {
+    val tvInput = findViewById<TextView>(R.id.tvInput)
+    if(lastNumeric && !isOperatorAdded(tvInput.text.toString()))
+    {
+      tvInput.append((view as Button).text)
+      lastNumeric = false
+      lastDot = false
+    }
+  }
+
+  private fun isOperatorAdded(value: String): Boolean
+  {
+    return if(value.startsWith("-"))
+    {
+      false
+    }
+    else
+    {
+      value.contains("/") || value.contains("*") || value.contains("+") || value.contains("-")
     }
   }
 }
